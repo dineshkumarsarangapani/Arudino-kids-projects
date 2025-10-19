@@ -73,9 +73,10 @@ The Arduino Uno serves as the brain, sending out ultrasonic pulses and listening
 3.  **Measure Time:** When the sound wave hits an object (like your toy car) and bounces back, the `Echo` pin detects it. The Arduino measures the total time the sound wave was traveling.
 4.  **Calculate Distance:** Knowing the speed of sound, the Arduino calculates how far away the object is. The formula is `Distance = (Travel Time / 2) * Speed of Sound`. We divide by 2 because the sound traveled to the object *and* back.
 5.  **Control the Light:**
-    *   If the calculated distance is **less than** the `DISTANCE_THRESHOLD` (set to 50 cm in the code), the Arduino knows an object is near and turns the LED **ON**.
-    *   If the distance is **greater than** the threshold, the Arduino turns the LED **OFF**.
-6.  **Loop:** The system waits for half a second and then repeats the whole process, constantly checking for approaching objects.
+    *   If the calculated distance is **less than** the `DISTANCE_THRESHOLD`, the Arduino registers a "detection" and resets a timer.
+    *   As long as it has been **less than 3 seconds** since the last detection, the Arduino will keep the LEDs **ON**. This ensures the lights stay on for a while after the car has passed.
+    *   If **more than 3 seconds** elapse without a new detection, the Arduino turns the LEDs **OFF**.
+6.  **Loop:** The system waits for a very short time (0.1 seconds) and then repeats the whole process, constantly checking for approaching objects.
 
 ## 5. Usage
 1.  Assemble the circuit according to the breadboard instructions.

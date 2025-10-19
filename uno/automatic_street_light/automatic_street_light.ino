@@ -6,6 +6,12 @@ const int LED_PIN_2 = 11;
 const int LED_PIN_3 = 10;
 const int LED_PIN_4 = 9;
 
+// How long the lights should stay on (in milliseconds) after an object is last detected
+const long LIGHT_ON_DURATION = 3000; // 3 seconds
+
+// Variable to store the time when an object was last detected
+unsigned long lastDetectionTime = 0;
+
 
 // Define the distance threshold in centimeters (cm)
 // When an object is closer than this, the light will turn on.
@@ -56,14 +62,21 @@ void loop() {
   // --- Step 4: Control the LED ---
   // Check if the measured distance is less than our threshold.
   if (distance < DISTANCE_THRESHOLD && distance > 0) {
-    // If an object is detected within the range, turn the LEDs ON.
+    // If an object is detected, update the time of the last detection.
+    lastDetectionTime = millis();
+  }
+
+  // --- Step 5: Control the LEDs based on time ---
+  // Check if the time since the last detection is less than our desired duration.
+  if (millis() - lastDetectionTime < LIGHT_ON_DURATION) {
+    // If it has been less than 3 seconds since the last detection, turn the lights ON.
     digitalWrite(LED_PIN_1, HIGH);
     digitalWrite(LED_PIN_2, HIGH);
     digitalWrite(LED_PIN_3, HIGH);
     digitalWrite(LED_PIN_4, HIGH);
     Serial.println("Streetlights ON");
   } else {
-    // If no object is detected (or it's too far), turn the LEDs OFF.
+    // If it has been more than 3 seconds, turn the lights OFF.
     digitalWrite(LED_PIN_1, LOW);
     digitalWrite(LED_PIN_2, LOW);
     digitalWrite(LED_PIN_3, LOW);
@@ -71,6 +84,6 @@ void loop() {
     Serial.println("Streetlights OFF");
   }
 
-  // Wait for a short period before taking the next reading.
-  delay(500); // 0.5-second delay
+  // A shorter delay makes the sensor more responsive.
+  delay(100); // 0.1-second delay
 }
