@@ -7,7 +7,7 @@ const int LED_PIN_3 = 10;
 const int LED_PIN_4 = 9;
 
 // How long the lights should stay on (in milliseconds) after an object is last detected
-const long LIGHT_ON_DURATION = 3000; // 3 seconds
+const long LIGHT_ON_DURATION = 5000; // 3 seconds
 
 // Variable to store the time when an object was last detected
 unsigned long lastDetectionTime = 0;
